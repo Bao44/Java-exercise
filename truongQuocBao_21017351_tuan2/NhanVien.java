@@ -1,6 +1,8 @@
 package truongQuocBao_21017351_tuan2;
 
-public class NhanVien {
+import java.io.Serializable;
+
+public class NhanVien implements Serializable{
 	private String maNV,ho,ten,gt;
 	private int tuoi;
 	private double luong;
@@ -8,6 +10,7 @@ public class NhanVien {
 		this.setMaNV(maNV);
 		this.setHo(ho);
 		this.setTen(ten);
+		this.setGt(gt);
 		this.setTuoi(tuoi);
 		this.setLuong(luong);
 	}

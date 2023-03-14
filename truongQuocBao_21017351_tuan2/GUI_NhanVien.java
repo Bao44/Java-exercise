@@ -39,6 +39,7 @@ public class GUI_NhanVien extends JFrame implements ActionListener{
 	private DefaultTableModel model;
 	private JPanel center;
 	private dsNhanVien ds;
+	private Database data;
 	
 	public GUI_NhanVien() {
 		setTitle("^-^");
@@ -46,8 +47,14 @@ public class GUI_NhanVien extends JFrame implements ActionListener{
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(false);
+		data = new Database();
 		ds = new dsNhanVien();
 		createGUI();
+		try {
+			loadData();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		setVisible(true);
 	}
 	public void createGUI() {
@@ -183,7 +190,7 @@ public class GUI_NhanVien extends JFrame implements ActionListener{
 	}
 	public void createTable() {
 		//Khởi tạo table, add model vào table và làm việc trên model
-		JPanel panelTable = new JPanel();
+//		JPanel panelTable = new JPanel();
 		model = new DefaultTableModel();
 		table = new JTable(model);
 		model.addColumn("Mã NV");
@@ -226,6 +233,19 @@ public class GUI_NhanVien extends JFrame implements ActionListener{
 	}
 	public static void main(String[] args) {
 		new GUI_NhanVien();
+	}
+	private void loadData() throws Exception{
+		ds = (dsNhanVien)data.readFile("NhanVien.dat");
+		if(ds == null) {
+			ds = new dsNhanVien();
+		}else {
+			for (NhanVien nv : ds.getNhanVien()) {
+				String[] row = {nv.getMaNV(), nv.getHo(), 
+								nv.getTen(), nv.getGt(), 
+								nv.getTuoi()+"",nv.getLuong()+""};
+					model.addRow(row);
+			}
+		}
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -332,6 +352,8 @@ public class GUI_NhanVien extends JFrame implements ActionListener{
 			JOptionPane.showMessageDialog(this, "Thêm thành công");
 			String [] row = {ma,ho,ten,gt,tuoi,luong};
 			model.addRow(row);
+			//save File
+			data.saveFile("NhanVien.dat", ds);
 		}else {
 			JOptionPane.showMessageDialog(this, "ID này đã tồn tại");
 			txtMaNV.setText("");
@@ -345,6 +367,8 @@ public class GUI_NhanVien extends JFrame implements ActionListener{
 				ds.xoaViTri(r);
 				model.removeRow(r);
 				xoatrang();
+				//save File
+				data.saveFile("NhanVien.dat", ds);
 			}
 		}else {
 			JOptionPane.showMessageDialog(null, "Bạn chưa chọn dòng cần xóa.");

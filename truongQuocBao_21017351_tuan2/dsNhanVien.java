@@ -1,8 +1,9 @@
 package truongQuocBao_21017351_tuan2;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class dsNhanVien {
+public class dsNhanVien implements Serializable{
 	private ArrayList<NhanVien> ls;
 
 	public dsNhanVien(ArrayList<NhanVien> ls) {
